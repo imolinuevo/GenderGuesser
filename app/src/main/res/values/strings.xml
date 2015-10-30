@@ -3,4 +3,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
+    <string name="empty_all">Empty all</string>
+    <string name="name_send">Look up!</string>
+    <string name="name_title">What\'s the name you\'re looking for?</string>
+    <string name="recent_title">Your recent searches</string>
 </resources>
