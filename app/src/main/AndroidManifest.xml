@@ -18,9 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowSavedMaleNames" >
+        <activity
+            android:name=".ShowSavedMaleNames"
+            android:parentActivityName=".MainActivity">
         </activity>
-        <activity android:name=".ShowSavedFemaleNames" >
+        <activity
+            android:name=".ShowSavedFemaleNames"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 
