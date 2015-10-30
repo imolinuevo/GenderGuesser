@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".ShowSavedMaleNames" >
         </activity>
+        <activity android:name=".ShowSavedFemaleNames" >
+        </activity>
     </application>
 
 </manifest>

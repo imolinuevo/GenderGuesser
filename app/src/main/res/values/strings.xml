@@ -8,4 +8,5 @@
     <string name="name_title">What\'s the name you\'re looking for?</string>
     <string name="recent_title">Your recent searches</string>
     <string name="male_names">Saved male names</string>
+    <string name="female_names">Saved female names</string>
 </resources>
