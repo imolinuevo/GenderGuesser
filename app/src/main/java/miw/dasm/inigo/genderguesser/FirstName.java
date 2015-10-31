@@ -2,14 +2,24 @@ package miw.dasm.inigo.genderguesser;
 
 public class FirstName {
 
+    private int id;
     private String name;
     private String gender;
     private String description;
 
-    public FirstName(String name, String gender, String description) {
+    public FirstName(int id, String name, String gender, String description) {
+        this.id = id;
         this.name = name;
         this.gender = gender;
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -39,7 +49,8 @@ public class FirstName {
     @Override
     public String toString() {
         return "FirstName{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", gender='" + gender + '\'' +
                 ", description='" + description + '\'' +
                 '}';
