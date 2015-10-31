@@ -71,7 +71,7 @@ public class FirstNameStore extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "SELECT * FROM " + FirstNameContract.FirstNameTable.TABLE_NAME
                 + " WHERE " + FirstNameContract.FirstNameTable.COL_NAME_GENDER
-                + " = '" + MALE_CONSTANT + "';";
+                + " = '" + MALE_CONSTANT + "'";
         Cursor cursor = database.rawQuery(query, null);
         while (cursor.moveToNext()) {
             maleFirstNames.add(new FirstName(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
@@ -84,11 +84,22 @@ public class FirstNameStore extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "SELECT * FROM " + FirstNameContract.FirstNameTable.TABLE_NAME
                 + " WHERE " + FirstNameContract.FirstNameTable.COL_NAME_GENDER
-                + " = '" + FEMALE_CONSTANT + "';";
+                + " = '" + FEMALE_CONSTANT + "'";
         Cursor cursor = database.rawQuery(query, null);
         while (cursor.moveToNext()) {
             femaleFirstNames.add(new FirstName(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
         }
         return femaleFirstNames;
+    }
+
+    public int getNextId() {
+        SQLiteDatabase database = this.getWritableDatabase();
+        String query = "SELECT * FROM " + FirstNameContract.FirstNameTable.TABLE_NAME;
+        Cursor cursor = database.rawQuery(query, null);
+        int count = 0;
+        while (cursor.moveToNext()) {
+            count++;
+        }
+        return count;
     }
 }
