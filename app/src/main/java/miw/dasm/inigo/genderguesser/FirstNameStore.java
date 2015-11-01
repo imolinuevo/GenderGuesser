@@ -102,4 +102,20 @@ public class FirstNameStore extends SQLiteOpenHelper {
         }
         return count;
     }
+
+    public boolean isNotAlready(String nameInput) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        String query = "SELECT * FROM " + FirstNameContract.FirstNameTable.TABLE_NAME
+                + " WHERE NAME = '" + nameInput + "'";
+        Cursor cursor = database.rawQuery(query, null);
+        int count = 0;
+        while (cursor.moveToNext()) {
+            count++;
+        }
+        if (count == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

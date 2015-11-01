@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         nameSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmptyEditText()) {
+                if (isEmptyEditText() && isNotAlready()) {
 
                     EditText nameInput = (EditText) findViewById(R.id.name_input);
                     String searchText = nameInput.getText().toString();
@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity
                     });
 
                     AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                    alertDialog.setTitle("Alert");
-                    alertDialog.setMessage("Alert message to be shown");
+                    alertDialog.setTitle("Processing your query");
+                    alertDialog.setMessage("This may take a moment");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -144,6 +144,11 @@ public class MainActivity extends AppCompatActivity
         } else {
             return true;
         }
+    }
+
+    public boolean isNotAlready() {
+        EditText nameInput = (EditText) findViewById(R.id.name_input);
+        return new FirstNameStore(this).isNotAlready(nameInput.getText().toString());
     }
 
     public void addFirstName(FirstName firstName) {

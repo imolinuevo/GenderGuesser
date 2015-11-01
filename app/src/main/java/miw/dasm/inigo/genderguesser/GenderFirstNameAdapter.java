@@ -24,7 +24,7 @@ public class GenderFirstNameAdapter extends ArrayAdapter<FirstName> {
         TextView nameText = (TextView) convertView.findViewById(R.id.male_name_text);
         nameText.setText(firstName.getName());
         TextView descriptionText = (TextView) convertView.findViewById(R.id.male_description_text);
-        descriptionText.setText(firstName.getGender());
+        descriptionText.setText(firstName.getDescription());
         return convertView;
     }
 }
