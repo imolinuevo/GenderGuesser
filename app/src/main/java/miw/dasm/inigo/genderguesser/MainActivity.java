@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +20,17 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    static final String BASE_URL = "https://montanaflynn-gender-guesser.p.mashape.com";
+    static final String LOG_TAG = "DemoRetrofit";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +52,31 @@ public class MainActivity extends AppCompatActivity
         nameSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (addFirstName()) {
+                if (isEmptyEditText()) {
+
+                    EditText nameInput = (EditText) findViewById(R.id.name_input);
+                    String searchText = nameInput.getText().toString();
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    GenderGuesserApiService apiService = retrofit.create(GenderGuesserApiService.class);
+                    Call<FirstName> call_async = apiService.getFirstname(searchText);
+                    call_async.enqueue(new Callback<FirstName>() {
+                        @Override
+                        public void onResponse(Response<FirstName> response, Retrofit retrofit) {
+                            FirstName firstName = response.body();
+                            Log.i(LOG_TAG, firstName.toString());
+                            addFirstName(firstName);
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+                            Log.e(LOG_TAG, t.getMessage());
+                        }
+                    });
+
                     AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                     alertDialog.setTitle("Alert");
                     alertDialog.setMessage("Alert message to be shown");
@@ -103,19 +137,27 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public boolean addFirstName() {
+    public boolean isEmptyEditText() {
         EditText nameInput = (EditText) findViewById(R.id.name_input);
         if(nameInput.getText().toString().equals("")) {
             return false;
         } else {
-            FirstNameStore firstNameStore = new FirstNameStore(this);
-            firstNameStore.addFirstName(new FirstName(firstNameStore.getNextId(), nameInput.getText().toString(), "male", "desc"));
-            ArrayList<FirstName> firstNames = firstNameStore.getRecentFirstNames();
-            RecentFirstNameAdapter recentFirstNameAdapter = new RecentFirstNameAdapter(this, android.R.layout.simple_spinner_dropdown_item, firstNames);
-            ListView recentList = (ListView) findViewById(R.id.recent_list);
-            recentList.setAdapter(recentFirstNameAdapter);
             return true;
         }
+    }
+
+    public void addFirstName(FirstName firstName) {
+        EditText nameInput = (EditText) findViewById(R.id.name_input);
+        FirstNameStore firstNameStore = new FirstNameStore(this);
+        firstName.setId(firstNameStore.getNextId());
+        if (firstName.getGender() == null) {
+            firstName.setGender("unknown");
+        }
+        firstNameStore.addFirstName(firstName);
+        ArrayList<FirstName> firstNames = firstNameStore.getRecentFirstNames();
+        RecentFirstNameAdapter recentFirstNameAdapter = new RecentFirstNameAdapter(this, android.R.layout.simple_spinner_dropdown_item, firstNames);
+        ListView recentList = (ListView) findViewById(R.id.recent_list);
+        recentList.setAdapter(recentFirstNameAdapter);
     }
 
     public void emptyAll() {
